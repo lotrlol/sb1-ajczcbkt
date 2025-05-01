@@ -1,23 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Send } from 'lucide-react';
 import { FadeIn } from './animation/FadeIn';
 
 const ContactForm = () => {
-  const [submitted, setSubmitted] = useState(false);
-
-  if (submitted) {
-    return (
-      <div className="text-center p-8 bg-[#0C0C16]/70 backdrop-blur-sm rounded-xl border border-[#E53CC1]/30">
-        <h3 className="text-2xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#E53CC1] to-[#FF9EE3]">
-          Thank you for your request!
-        </h3>
-        <p className="text-gray-300">
-          We will analyze your website and quickly send you a personalized estimate of the number of articles needed to reach your traffic goals.
-        </p>
-      </div>
-    );
-  }
-
   return (
     <FadeIn>
       <form
@@ -26,10 +11,6 @@ const ContactForm = () => {
         action="/"
         data-netlify="true"
         data-netlify-honeypot="bot-field"
-        onSubmit={() => {
-          // Delay to allow Netlify to capture the submission before the form unmounts
-          setTimeout(() => setSubmitted(true), 100);
-        }}
         className="space-y-6"
       >
         <input type="hidden" name="form-name" value="traffic-analysis" />
