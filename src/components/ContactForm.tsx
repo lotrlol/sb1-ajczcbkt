@@ -6,32 +6,6 @@ const ContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    const form = e.target as HTMLFormElement;
-    try {
-      const formData = new FormData(form);
-      const response = await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'multipart/form-data' },
-        body: formData
-      });
-      
-      if (response.ok) {
-        setSubmitted(true);
-      } else {
-        throw new Error('Form submission failed');
-      }
-    } catch (error) {
-      console.error('Form submission error:', error);
-      alert('There was an error submitting the form. Please try again.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   if (submitted) {
     return (
       <div className="text-center p-8 bg-[#0C0C16]/70 backdrop-blur-sm rounded-xl border border-[#E53CC1]/30">
@@ -51,16 +25,9 @@ const ContactForm = () => {
         name="traffic-analysis"
         method="POST"
         data-netlify="true"
-        netlify-honeypot="bot-field"
-        onSubmit={handleSubmit}
         className="space-y-6"
       >
         <input type="hidden" name="form-name" value="traffic-analysis" />
-        <p className="hidden">
-          <label>
-            Don't fill this out if you're human: <input name="bot-field" />
-          </label>
-        </p>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
@@ -152,20 +119,10 @@ const ContactForm = () => {
 
         <button
           type="submit"
-          disabled={isSubmitting}
-          className="w-full px-8 py-4 bg-gradient-to-r from-[#E53CC1] to-[#FF9EE3] text-black font-semibold rounded-lg flex items-center justify-center transform transition-all duration-300 hover:scale-105 hover:shadow-glow disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full px-8 py-4 bg-gradient-to-r from-[#E53CC1] to-[#FF9EE3] text-black font-semibold rounded-lg flex items-center justify-center transform transition-all duration-300 hover:scale-105 hover:shadow-glow"
         >
-          {isSubmitting ? (
-            <>
-              <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-              Sending...
-            </>
-          ) : (
-            <>
-              <Send className="w-5 h-5 mr-2" />
-              Get my free analysis
-            </>
-          )}
+          <Send className="w-5 h-5 mr-2" />
+          Get my free analysis
         </button>
       </form>
     </FadeIn>
