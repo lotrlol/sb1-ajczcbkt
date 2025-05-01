@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Send, Loader2 } from 'lucide-react';
+import { Send } from 'lucide-react';
 import { FadeIn } from './animation/FadeIn';
 
 const ContactForm = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
   if (submitted) {
@@ -24,10 +23,18 @@ const ContactForm = () => {
       <form
         name="traffic-analysis"
         method="POST"
+        action="/"
         data-netlify="true"
+        data-netlify-honeypot="bot-field"
+        onSubmit={() => setSubmitted(true)}
         className="space-y-6"
       >
         <input type="hidden" name="form-name" value="traffic-analysis" />
+        <p className="hidden">
+          <label>
+            Don't fill this out if you're human: <input name="bot-field" />
+          </label>
+        </p>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
