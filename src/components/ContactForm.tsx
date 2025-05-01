@@ -36,18 +36,32 @@ const ContactForm = () => {
           </div>
 
           <div>
-            <label htmlFor="websiteUrl" className="block text-sm font-medium text-gray-300 mb-2">
-              Website URL
+            <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+              Email Address
             </label>
             <input
-              type="url"
-              id="websiteUrl"
-              name="websiteUrl"
+              type="email"
+              id="email"
+              name="email"
               required
               className="w-full px-4 py-3 bg-[#0C0C16]/70 border border-gray-800 rounded-lg focus:ring-2 focus:ring-[#E53CC1] focus:border-transparent transition-all duration-300"
-              placeholder="https://yourwebsite.com"
+              placeholder="you@example.com"
             />
           </div>
+        </div>
+
+        <div>
+          <label htmlFor="websiteUrl" className="block text-sm font-medium text-gray-300 mb-2">
+            Website URL
+          </label>
+          <input
+            type="url"
+            id="websiteUrl"
+            name="websiteUrl"
+            required
+            className="w-full px-4 py-3 bg-[#0C0C16]/70 border border-gray-800 rounded-lg focus:ring-2 focus:ring-[#E53CC1] focus:border-transparent transition-all duration-300"
+            placeholder="https://yourwebsite.com"
+          />
         </div>
 
         <div>
