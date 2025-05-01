@@ -1,70 +1,35 @@
-import React, { useState } from 'react';
-import { Send, Loader2 } from 'lucide-react';
-import { FadeIn } from './animation/FadeIn';
+// src/components/ContactForm.tsx
+import React from 'react'
+import { Send } from 'lucide-react'
+import { FadeIn } from './animation/FadeIn'
 
-const ContactForm = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    const form = e.target as HTMLFormElement;
-    try {
-      const formData = new FormData(form);
-      const response = await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(formData as any).toString(),
-      });
-      
-      if (response.ok) {
-        setSubmitted(true);
-      } else {
-        throw new Error('Form submission failed');
-      }
-    } catch (error) {
-      console.error('Form submission error:', error);
-      alert('There was an error submitting the form. Please try again.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  if (submitted) {
-    return (
-      <div className="text-center p-8 bg-[#0C0C16]/70 backdrop-blur-sm rounded-xl border border-[#E53CC1]/30">
-        <h3 className="text-2xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#E53CC1] to-[#FF9EE3]">
-          Thank you for your request!
-        </h3>
-        <p className="text-gray-300">
-          We will analyze your website and quickly send you a personalized estimate of the number of articles needed to reach your traffic goals.
-        </p>
-      </div>
-    );
-  }
-
+const ContactForm: React.FC = () => {
   return (
     <FadeIn>
       <form
         name="traffic-analysis"
         method="POST"
+        action="/thank-you"
         data-netlify="true"
-        netlify-honeypot="bot-field"
-        onSubmit={handleSubmit}
+        data-netlify-honeypot="bot-field"
         className="space-y-6"
       >
+        {/* Netlify form name */}
         <input type="hidden" name="form-name" value="traffic-analysis" />
+
+        {/* Honeypot field (hidden from users) */}
         <p className="hidden">
           <label>
-            Don't fill this out if you're human: <input name="bot-field" />
+            Don’t fill this out if you’re human: <input name="bot-field" />
           </label>
         </p>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label htmlFor="companyName" className="block text-sm font-medium text-gray-300 mb-2">
+            <label
+              htmlFor="companyName"
+              className="block text-sm font-medium text-gray-300 mb-2"
+            >
               Company Name
             </label>
             <input
@@ -76,9 +41,11 @@ const ContactForm = () => {
               placeholder="Your company"
             />
           </div>
-          
           <div>
-            <label htmlFor="websiteUrl" className="block text-sm font-medium text-gray-300 mb-2">
+            <label
+              htmlFor="websiteUrl"
+              className="block text-sm font-medium text-gray-300 mb-2"
+            >
               Website URL
             </label>
             <input
@@ -93,7 +60,10 @@ const ContactForm = () => {
         </div>
 
         <div>
-          <label htmlFor="companyDescription" className="block text-sm font-medium text-gray-300 mb-2">
+          <label
+            htmlFor="companyDescription"
+            className="block text-sm font-medium text-gray-300 mb-2"
+          >
             Company Description
           </label>
           <textarea
@@ -107,7 +77,10 @@ const ContactForm = () => {
         </div>
 
         <div>
-          <label htmlFor="productDescription" className="block text-sm font-medium text-gray-300 mb-2">
+          <label
+            htmlFor="productDescription"
+            className="block text-sm font-medium text-gray-300 mb-2"
+          >
             Products/Services Description
           </label>
           <textarea
@@ -122,7 +95,10 @@ const ContactForm = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label htmlFor="currentTraffic" className="block text-sm font-medium text-gray-300 mb-2">
+            <label
+              htmlFor="currentTraffic"
+              className="block text-sm font-medium text-gray-300 mb-2"
+            >
               Current Traffic (visitors/month)
             </label>
             <input
@@ -134,9 +110,11 @@ const ContactForm = () => {
               placeholder="1000"
             />
           </div>
-          
           <div>
-            <label htmlFor="desiredTraffic" className="block text-sm font-medium text-gray-300 mb-2">
+            <label
+              htmlFor="desiredTraffic"
+              className="block text-sm font-medium text-gray-300 mb-2"
+            >
               Desired Traffic (visitors/month)
             </label>
             <input
@@ -152,24 +130,14 @@ const ContactForm = () => {
 
         <button
           type="submit"
-          disabled={isSubmitting}
-          className="w-full px-8 py-4 bg-gradient-to-r from-[#E53CC1] to-[#FF9EE3] text-black font-semibold rounded-lg flex items-center justify-center transform transition-all duration-300 hover:scale-105 hover:shadow-glow disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full px-8 py-4 bg-gradient-to-r from-[#E53CC1] to-[#FF9EE3] text-black font-semibold rounded-lg flex items-center justify-center transform transition-all duration-300 hover:scale-105 hover:shadow-glow"
         >
-          {isSubmitting ? (
-            <>
-              <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-              Sending...
-            </>
-          ) : (
-            <>
-              <Send className="w-5 h-5 mr-2" />
-              Get my free analysis
-            </>
-          )}
+          <Send className="w-5 h-5 mr-2" />
+          Get my free analysis
         </button>
       </form>
     </FadeIn>
-  );
-};
+  )
+}
 
-export default ContactForm;
+export default ContactForm
