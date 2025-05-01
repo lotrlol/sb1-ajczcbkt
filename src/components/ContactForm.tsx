@@ -26,7 +26,10 @@ const ContactForm = () => {
         action="/"
         data-netlify="true"
         data-netlify-honeypot="bot-field"
-        onSubmit={() => setSubmitted(true)}
+        onSubmit={() => {
+          // Delay to allow Netlify to capture the submission before the form unmounts
+          setTimeout(() => setSubmitted(true), 100);
+        }}
         className="space-y-6"
       >
         <input type="hidden" name="form-name" value="traffic-analysis" />
@@ -35,7 +38,7 @@ const ContactForm = () => {
             Don't fill this out if you're human: <input name="bot-field" />
           </label>
         </p>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label htmlFor="companyName" className="block text-sm font-medium text-gray-300 mb-2">
@@ -50,7 +53,7 @@ const ContactForm = () => {
               placeholder="Your company"
             />
           </div>
-          
+
           <div>
             <label htmlFor="websiteUrl" className="block text-sm font-medium text-gray-300 mb-2">
               Website URL
@@ -108,7 +111,7 @@ const ContactForm = () => {
               placeholder="1000"
             />
           </div>
-          
+
           <div>
             <label htmlFor="desiredTraffic" className="block text-sm font-medium text-gray-300 mb-2">
               Desired Traffic (visitors/month)
