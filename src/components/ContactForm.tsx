@@ -1,19 +1,36 @@
-import React, { useState } from 'react';
-import { Send } from 'lucide-react';
-import { FadeIn } from './animation/FadeIn';
+import React, { useState } from "react";
+import FadeIn from "react-fade-in";
 
-const ContactForm = () => {
+export default function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();                       // 1) stop native submit
+    const form = e.target;
+    const data = new FormData(form);          // 2) gather all inputs
+
+    try {
+      const res = await fetch("/", {           // 3) post to Netlify’s endpoint
+        method: "POST",
+        body: data,
+      });
+      if (res.ok) {
+        setSubmitted(true);                   // 4) now swap in the thank-you
+      } else {
+        console.error("Form submission error:", res.statusText);
+      }
+    } catch (err) {
+      console.error("Netlify submit failed:", err);
+    }
+  };
 
   if (submitted) {
     return (
-      <div className="text-center p-8 bg-[#0C0C16]/70 backdrop-blur-sm rounded-xl border border-[#E53CC1]/30">
-        <h3 className="text-2xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#E53CC1] to-[#FF9EE3]">
-          Thank you for your request!
-        </h3>
-        <p className="text-gray-300">
-          We will analyze your website and quickly send you a personalized estimate of the number of articles needed to reach your traffic goals.
-        </p>
+      <div className="mx-auto max-w-lg rounded-lg bg-secondary-500 px-8 py-16 text-center md:px-16">
+        <FadeIn>
+          <h2 className="mb-4 text-4xl font-bold">Thank you!</h2>
+          <p className="text-lg">We’ve received your request and will be in touch soon.</p>
+        </FadeIn>
       </div>
     );
   }
@@ -23,117 +40,67 @@ const ContactForm = () => {
       <form
         name="traffic-analysis"
         method="POST"
-        action="/"
         data-netlify="true"
         data-netlify-honeypot="bot-field"
-        onSubmit={() => setSubmitted(true)}
-        className="space-y-6"
+        onSubmit={handleSubmit}
+        className="mx-auto max-w-lg rounded-lg bg-secondary-500 px-8 py-16 md:px-16"
       >
+        {/* Required hidden input so Netlify picks up your form */}
         <input type="hidden" name="form-name" value="traffic-analysis" />
+
+        {/* Honeypot field (hide via CSS) */}
         <p className="hidden">
           <label>
-            Don't fill this out if you're human: <input name="bot-field" />
+            Don’t fill this out if you’re human: <input name="bot-field" />
           </label>
         </p>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label htmlFor="companyName" className="block text-sm font-medium text-gray-300 mb-2">
-              Company Name
-            </label>
-            <input
-              type="text"
-              id="companyName"
-              name="companyName"
-              required
-              className="w-full px-4 py-3 bg-[#0C0C16]/70 border border-gray-800 rounded-lg focus:ring-2 focus:ring-[#E53CC1] focus:border-transparent transition-all duration-300"
-              placeholder="Your company"
-            />
-          </div>
-          
-          <div>
-            <label htmlFor="websiteUrl" className="block text-sm font-medium text-gray-300 mb-2">
-              Website URL
-            </label>
-            <input
-              type="url"
-              id="websiteUrl"
-              name="websiteUrl"
-              required
-              className="w-full px-4 py-3 bg-[#0C0C16]/70 border border-gray-800 rounded-lg focus:ring-2 focus:ring-[#E53CC1] focus:border-transparent transition-all duration-300"
-              placeholder="https://yourwebsite.com"
-            />
-          </div>
-        </div>
 
-        <div>
-          <label htmlFor="companyDescription" className="block text-sm font-medium text-gray-300 mb-2">
-            Company Description
+        {/* Your visible fields */}
+        <div className="mb-4">
+          <label htmlFor="name" className="block text-sm font-medium">
+            Name
           </label>
-          <textarea
-            id="companyDescription"
-            name="companyDescription"
+          <input
+            id="name"
+            name="name"
+            type="text"
             required
-            rows={3}
-            className="w-full px-4 py-3 bg-[#0C0C16]/70 border border-gray-800 rounded-lg focus:ring-2 focus:ring-[#E53CC1] focus:border-transparent transition-all duration-300"
-            placeholder="Briefly describe your company"
+            className="mt-1 block w-full rounded border-gray-300"
           />
         </div>
 
-        <div>
-          <label htmlFor="productDescription" className="block text-sm font-medium text-gray-300 mb-2">
-            Products/Services Description
+        <div className="mb-4">
+          <label htmlFor="email" className="block text-sm font-medium">
+            Email
           </label>
-          <textarea
-            id="productDescription"
-            name="productDescription"
+          <input
+            id="email"
+            name="email"
+            type="email"
             required
-            rows={3}
-            className="w-full px-4 py-3 bg-[#0C0C16]/70 border border-gray-800 rounded-lg focus:ring-2 focus:ring-[#E53CC1] focus:border-transparent transition-all duration-300"
-            placeholder="Describe your main products or services"
+            className="mt-1 block w-full rounded border-gray-300"
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label htmlFor="currentTraffic" className="block text-sm font-medium text-gray-300 mb-2">
-              Current Traffic (visitors/month)
-            </label>
-            <input
-              type="number"
-              id="currentTraffic"
-              name="currentTraffic"
-              required
-              className="w-full px-4 py-3 bg-[#0C0C16]/70 border border-gray-800 rounded-lg focus:ring-2 focus:ring-[#E53CC1] focus:border-transparent transition-all duration-300"
-              placeholder="1000"
-            />
-          </div>
-          
-          <div>
-            <label htmlFor="desiredTraffic" className="block text-sm font-medium text-gray-300 mb-2">
-              Desired Traffic (visitors/month)
-            </label>
-            <input
-              type="number"
-              id="desiredTraffic"
-              name="desiredTraffic"
-              required
-              className="w-full px-4 py-3 bg-[#0C0C16]/70 border border-gray-800 rounded-lg focus:ring-2 focus:ring-[#E53CC1] focus:border-transparent transition-all duration-300"
-              placeholder="5000"
-            />
-          </div>
+        <div className="mb-4">
+          <label htmlFor="message" className="block text-sm font-medium">
+            Message
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            required
+            className="mt-1 block w-full rounded border-gray-300"
+          />
         </div>
 
         <button
           type="submit"
-          className="w-full px-8 py-4 bg-gradient-to-r from-[#E53CC1] to-[#FF9EE3] text-black font-semibold rounded-lg flex items-center justify-center transform transition-all duration-300 hover:scale-105 hover:shadow-glow"
+          className="w-full rounded bg-primary-600 py-2 px-4 font-semibold text-white hover:bg-primary-700"
         >
-          <Send className="w-5 h-5 mr-2" />
-          Get my free analysis
+          Get my free traffic analysis
         </button>
       </form>
     </FadeIn>
   );
-};
-
-export default ContactForm;
+}
